@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "2c28f9b6-7e58-4600-86b5-7075ed1ee873",
+		"name": "Leads",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "leads",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"profileUrl\":\"www.google.com\",\r\n    \"firstNamme\":\"shehzaib\",\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/leads",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"leads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "leads",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"location\":\"Fsd\",\r\n    \"industry\":\"WOITS-FSD\",\r\n    \"chatUrl\":\"www.google.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/leads/62c6b6b42ee2147c191f2495",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"leads",
+						"62c6b6b42ee2147c191f2495"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all userCampaign",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get userCampaign by their id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

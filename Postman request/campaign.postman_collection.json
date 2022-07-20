@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "34682e1a-5af2-4e6b-a7f6-68e51bd535e6",
+		"name": "campaign",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "campaign",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"campaignTitle\":\"shehzaib\",\r\n    \"typingDelay\":60,\r\n    \"delayPageNavigate\":1000,\r\n    \"noOfProfileVisitsPerHour\":50,\r\n    \"noOfProfileVisitsPerDay\":500,\r\n    \"visitsBeforeDelay\":700,\r\n    \"visitDelay\":900,\r\n    \"limitSnoozeDays\":30,\r\n    \"workingDaysArr\":\"saturday\",\r\n    \"workHrsPerDay\":5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/campaign",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"campaign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"campaignTitle\":\"title update\",\r\n    \"typingDelay\":100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/campaign/62c68b850b2aec7a0dcfb3f0",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"campaign",
+						"62c68b850b2aec7a0dcfb3f0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campaign",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/campaign/62c68b850b2aec7a0dcfb3f0",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"campaign",
+						"62c68b850b2aec7a0dcfb3f0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user by id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "all users",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

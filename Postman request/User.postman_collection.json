@@ -1,0 +1,273 @@
+{
+	"info": {
+		"_postman_id": "194e3bed-4df6-4e53-9f05-4a29f659677a",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"email\":\"shehzaibbutt222@gmail.com\",\r\n    \"password\":\"shehzaib1122@\",\r\n    \"message\":\"Hey FN! Just adding you to grow my LinkedIn Network\",\r\n    \"profiles\":[\r\n        {\"url\":\"https://www.linkedin.com/sales/lead/ACwAAAASON0BX1KzgSI9kyccDoplfSRndlggjJg,NAME_SEARCH,OxPM?_ntb=44u%2F%2FZ9HQEWZXG1lgpbz1A%3D%3D\"},\r\n        {\"url\":\"https://www.linkedin.com/sales/lead/ACwAAAAU1CgBXPpxaj5z_DpqWnwZpvKDKj4JFAU,NAME_SEARCH,mx9q?_ntb=44u%2F%2FZ9HQEWZXG1lgpbz1A%3D%3D\"}\r\n    ],\r\n    \"typingDelay\":10,\r\n    \"pageNavigationDelay\":1000,\r\n    \"noOfVisitsPerHr\":\"\",\r\n    \"noOfVisitsPerDay\":\"\",\r\n    \"delayVisits\":\"\",\r\n    \"snoozeDays\":\"\",\r\n    \"workingDaysArr\":[],\r\n    \"workHrsPerDay\":\"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3006/send-connections",
+					"host": [
+						"localhost"
+					],
+					"port": "3006",
+					"path": [
+						"send-connections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code===201){\r",
+							"    pm.environment.set(\"authToken\",pm.response.json().token)\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"Muhammad3\",\r\n    \"middleName\" : \"shehzaib3\",\r\n    \"lastName\":\"butt2\",\r\n    \"title\":\"WOITS2\",\r\n    \"userName\":\"shehzaib2\",\r\n    \"password\":\"shehzaib1232\",\r\n    \"linkedInEmail\":\"hamza2@gmail.com\",\r\n    \"linkedInPassword\":\"1234567892\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/user",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.response.code===200){\r",
+							"    pm.environment.set(\"authToken\",pm.response.json().token)\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\":\"shehzaib2\",\r\n    \"password\":\"shehzaib1232\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/user/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "shehzaib",
+							"disabled": true
+						},
+						{
+							"key": "userPassword",
+							"value": "shehzaib123",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/user/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout All",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users/logoutAll",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"logoutAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"ali\",\r\n    \"middleName\" : \"jutt\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/user/62bfff92000c584bfdedc86b",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"62bfff92000c584bfdedc86b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users/me",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
