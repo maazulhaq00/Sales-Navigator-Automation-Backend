@@ -14,16 +14,6 @@ const schema = new mongoose.Schema({
       }
     },
   },
-  middleName: {
-    type: String,
-    required: true,
-    trim: true,
-    validate(value) {
-      if (validator.isEmpty(value)) {
-        throw new Error("Middle name cannot be empty");
-      }
-    },
-  },
   lastName: {
     type: String,
     required: true,
@@ -34,23 +24,15 @@ const schema = new mongoose.Schema({
       }
     },
   },
-  title: {
+  email: {
     type: String,
     required: true,
     trim: true,
     validate(value) {
-      if (validator.isEmpty(value)) {
-        throw new Error("Title cannot be empty");
-      }
-    },
-  },
-  userName: {
-    type: String,
-    required: true,
-    trim: true,
-    validate(value) {
-      if (validator.isEmpty(value)) {
-        throw new Error("User cannot be empty");
+      if (!validator.isEmail(value)) {
+        throw new Error("Email is invalid");
+      } else if (validator.isEmpty(value)) {
+        throw new Error("Email cannot be empty");
       }
     },
   },
@@ -85,6 +67,10 @@ const schema = new mongoose.Schema({
         throw new Error("LinkedIn password cannot be empty");
       }
     },
+  },
+  isVerified:{
+    type: Boolean,
+    required: true,
   },
   tokens: [
     {
