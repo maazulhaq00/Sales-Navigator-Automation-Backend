@@ -87,7 +87,7 @@ app.post("/user/signup", async (req, res) => {
           console.log("smtp success")
           try {
             await user.save();
-            res.status(201).json({message : "Please verify your account", user});
+            res.status(201).json({message : "Please verify your email account", user});
           } catch (err) {
             res.status(400).json({message : err.message});
           }
@@ -116,13 +116,13 @@ app.post("/user/verify-account", auth, async (req, res) => {
 app.post("/user/login", async (req, res) => {
   try {
     const user = await User.findByCredentials(
-      req.body.userName,
+      req.body.email,
       req.body.password
     );
     const token = await user.generateAuthToken();
-    res.send({ user, token });
-  } catch (e) {
-    res.status(400).send();
+    res.status(201).json({ message:"Successfully Login",user, token });
+  } catch (err) {
+    res.status(400).json({ message:"Login Failed",errorMessage: err.message });
   }
 });
 
