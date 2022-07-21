@@ -26,78 +26,67 @@ async function sendEmail({ to, subject, html }) {
   });
 }
 
-app.post("/user", async (req, res) => {
-  const user = new User(req.body);
-  try {
-    await user.save();
-    res.status(201).send(user);
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
 app.post("/user/signup", async (req, res) => {
+    // checks if password and confirm password matches 
+    if(req.body.password != req.body.confirmPassword){
+      res.status(400).json({message: "Password does not match"});
+    }
+    // checks if user already exits
+    const user = await User.findOne({ email: req.body.email });
   
-  // checks if password and confirm password matches 
-  if(req.body.password != req.body.confirmPassword){
-    res.status(400).json({message: "Password does not match"});
-  }
-
-  // checks if user already exits
-  const user = await User.findOne({ email: req.body.email });
-
-  if(user){
-    res.status(400).json({message: "Email already signed-in"});
-  }
-  else{
-    // create user with isVerified false
-    const user = new User({
-      firstName:req.body.firstName,
-      lastName:req.body.lastName,
-      email:req.body.email,
-      password:req.body.password,
-      linkedInEmail:req.body.linkedInEmail,
-      linkedInPassword:req.body.linkedInPassword,
-      isVerified: false
-    });
-
-    console.log(user)
-
-    const token = jwt.sign({ _id: user._id.toString() }, "salesnavsecret");
-    user.tokens = user.tokens.concat({ token });
-
-    console.log(user)
-    
-    // send verification mail
-    sendEmail({to: user.email, subject: "SALES NAVIGATOR: VERIFY YOUR EMAIL", html: `
-      <html>
-        <body>
-          <p>Hi ${user.firstName},</p>
-          <p>Welcome to Sales Navigator Automation!</p>
-          <p>
-            To verify your account click
-            <a href="https://www.frontend.com/verify-account?token=${user.tokens[user.tokens.length - 1].token}">HERE</a>
-
-          </p>
-        </body>
+    if(user){
+      res.status(400).json({message: "Email already signed-up"});
+    }
+    else{
+      // create user with isVerified false
+      const user = new User({
+        firstName:req.body.firstName,
+        lastName:req.body.lastName,
+        email:req.body.email,
+        password:req.body.password,
+        linkedInEmail:req.body.linkedInEmail,
+        linkedInPassword:req.body.linkedInPassword,
+        isVerified: false
+      });
+  
+      console.log(user)
+  
+      const token = jwt.sign({ _id: user._id.toString() }, "salesnavsecret");
+      user.tokens = user.tokens.concat({ token });
+  
+      console.log(user)
       
-      </html>   
-    `})
-      .then(async ()=>{
-          console.log("smtp success")
-          try {
-            await user.save();
-            res.status(201).json({message : "Please verify your email account", user});
-          } catch (err) {
-            res.status(400).json({message : err.message});
-          }
-
-      })
-      .catch((err)=>{
-        res.status(500).send({message: "Error occure while sending verification email", errorMessage: err.message});
-      })
-
-  }
+      // send verification mail
+      sendEmail({to: user.email, subject: "SALES NAVIGATOR: VERIFY YOUR EMAIL", html: `
+        <html>
+          <body>
+            <p>Hi ${user.firstName},</p>
+            <p>Welcome to Sales Navigator Automation!</p>
+            <p>
+              To verify your account click
+              <a href="https://www.frontend.com/verify-account?token=${user.tokens[user.tokens.length - 1].token}">HERE</a>
+  
+            </p>
+          </body>
+        
+        </html>   
+      `})
+        .then(async ()=>{
+            console.log("smtp success")
+            try {
+              await user.save();
+              res.status(201).json({message : "Please verify your email account", user});
+            } catch (err) {
+              res.status(400).json({message : err.message});
+            }
+  
+        })
+        .catch((err)=>{
+          res.status(500).send({message: "Error occure while sending verification email", errorMessage: err.message});
+        })
+  
+    }
+  
 });
 
 app.post("/user/verify-account", auth, async (req, res) => {
@@ -152,11 +141,9 @@ app.patch("/user/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = [
     "firstName",
-    "middleName",
     "lastName",
-    "title",
-    "userName",
-    "userPassword",
+    "email",
+    "password",
     "linkedInEmail",
     "linkedInPassword",
   ];
