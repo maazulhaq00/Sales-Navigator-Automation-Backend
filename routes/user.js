@@ -107,7 +107,7 @@ app.post("/user/verify-account", auth, async (req, res) => {
     });
     req.user.isVerified = true
     await req.user.save();
-    res.status(201).json({message:"Account verified!"});
+    res.json({message:"Account verified!"});
   } catch (err) {
     res.status(500).json({message: "Error occure while verifing account", errorMessage : err.message});
   }
@@ -120,7 +120,7 @@ app.post("/user/login", async (req, res) => {
       req.body.password
     );
     const token = await user.generateAuthToken();
-    res.status(201).json({ message:"Successfully Login",user, token });
+    res.json({ message:"Successfully Login",user, token });
   } catch (err) {
     res.status(400).json({ message:"Login Failed",errorMessage: err.message });
   }
@@ -132,9 +132,9 @@ app.post("/user/logout", auth, async (req, res) => {
       return token.token !== req.token;
     });
     await req.user.save();
-    res.send();
-  } catch (e) {
-    res.status(500).send();
+    res.json({message:"Successfully Logout"});
+  } catch (err) {
+    res.status(500).json({message:"Logout Failed", errorMessage: err.message});
   }
 });
 
@@ -142,9 +142,9 @@ app.post("/users/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];
     await req.user.save();
-    res.send();
-  } catch (e) {
-    res.status(500).send();
+    res.json({message:"Successfully Logout All"});
+  } catch (err) {
+    res.status(500).json({message:"Logout All Failed", errorMessage: err.message});
   }
 });
 
