@@ -104,6 +104,18 @@ app.post("/user/signup", async (req, res) => {
   }
 });
 
+app.post("/user/verify-account", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
+    req.user.isVerified = true
+    await req.user.save();
+    res.status(201).json({message:"Account verified!"});
+  } catch (e) {
+    res.status(500).send();
+  }
+});
 
 app.post("/user/login", async (req, res) => {
   try {
