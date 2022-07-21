@@ -72,19 +72,15 @@ app.post("/user/signup", async (req, res) => {
     sendEmail({to: user.email, subject: "SALES NAVIGATOR: VERIFY YOUR EMAIL", html: `
       <html>
         <body>
-          <p>To verify your account click on the button below</p>
-          <button onclick="verify()">VERIFY</button>
+          <p>Hi ${user.firstName},</p>
+          <p>Welcome to Sales Navigator Automation!</p>
+          <p>
+            To verify your account click
+            <a href="https://www.frontend.com/verify-account?token=${user.tokens[user.tokens.length - 1].token}">HERE</a>
+
+          </p>
         </body>
-        <script>
-        function verify() {
-          fetch('http://localhost:3000/user/verify-account', {
-            method: 'POST',
-            headers: {Authentication: 'Bearer ${user.tokens[user.tokens.length - 1].token}'}
-          })
-          .then(resp => resp.json())
-          .then(json => console.log(json))
-          }
-        </script>
+      
       </html>   
     `})
       .then(async ()=>{
@@ -112,8 +108,8 @@ app.post("/user/verify-account", auth, async (req, res) => {
     req.user.isVerified = true
     await req.user.save();
     res.status(201).json({message:"Account verified!"});
-  } catch (e) {
-    res.status(500).send();
+  } catch (err) {
+    res.status(500).json({message: "Error occure while verifing account", errorMessage : err.message});
   }
 });
 

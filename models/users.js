@@ -103,8 +103,8 @@ schema.methods.generateAuthToken = async function () {
   return token;
 };
 
-schema.statics.findByCredentials = async (name, password) => {
-  const user = await User.findOne({ name });
+schema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
 
   if (!user) {
     throw new Error("Unable to login");
