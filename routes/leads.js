@@ -2,44 +2,56 @@ const express = require("express");
 const Leads = require("../models/lead");
 const app = express();
 const auth = require("../middleware/auth");
-const userCampaign = require("../models/userCampaign");
+const user = require("../models/users");
 
-app.post("/leads", async (req, res) => {
-  const leads = new Leads(req.body);
+app.post("/leads", auth, async (req, res) => {
+  const lead = new Leads({
+    userId: req.user._id,
+    ...req.body,
+  });
   try {
-    await leads.save();
-    res.status(201).send(leads);
+    await lead.save();
+    res.status(201).send({ message: "Lead added!", lead });
   } catch (e) {
-    res.status(400).send(e);
+    res
+      .status(400)
+      .send({ message: "Failed to add the lead", errorMessage: e.message });
   }
 });
-app.get("/leads", async (req, res) => {
-  userCampaign
-    .find({})
-    .populate("userCampaignId")
-    .exec(function (err, leads) {
-      if (err) {
-        return res.send(err);
-      }
-      res.json({ message: "User Campaing List", data: leads });
+app.get("/leads", auth, async (req, res) => {
+  try {
+    const leads = await Leads.find({ userId: req.user._id });
+    res.send({
+      message: "Successfully fetch all the leads of the user",
+      leads,
     });
-});
-//find user by their id
-app.get("/leads/:id", async (req, res) => {
-  const userCampaignId = req.params.id;
-  userCampaign
-    .find({ _id: userCampaignId })
-    .populate("userCampaignId")
-    .exec(function (err, leads) {
-      if (err) {
-        return res.send(err);
-      }
-      res.json({ message: "User Campaing List", data: leads });
+  } catch (e) {
+    res.status(500).send({
+      message: "Error in finding all the leads data",
+      errorMessage: e.message,
     });
+  }
 });
-app.patch("/leads/:id", async (req, res) => {
+app.get("/leads/:id", auth, async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const lead = await Leads.find({ _id: _id, userId: req.user._id });
+
+    if (!lead) {
+      return res.status(404).send({ message: "The lead id is not correct" });
+    }
+    res.send({ message: "Successfully fetched the specified lead", lead });
+  } catch (e) {
+    res.status(500).send({
+      message: "Failed to fetch specified lead",
+      errorMessage: e.message,
+    });
+  }
+});
+app.patch("/leads/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = [
+    "requestStatus",
     "profileUrl",
     "firstName",
     "middleName",
@@ -49,28 +61,58 @@ app.patch("/leads/:id", async (req, res) => {
     "location",
     "industry",
     "chatUrl",
-    "campaignId",
   ];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
   if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates!" });
+    return res.status(400).send({ message: "Invalid updates!" });
   }
   try {
-    const leads = await Leads.findOne({
-      _id: req.params.id,
-      campaignId: req.user._id,
-    });
+    const lead = await Leads.findOne(
+      { _id: req.params.id, userId: req.user._id },
+      {}
+    );
 
-    if (!leads) {
-      return res.status(404).send();
+    if (!lead) {
+      return res.status(404).send({ message: "Please provide correct id" });
     }
-    updates.forEach((update) => (leads[update] = req.body[update]));
-    await leads.save();
-    res.send(leads);
+    updates.forEach((update) => (lead[update] = req.body[update]));
+    await lead.save();
+    res.send({ message: "Successfully updated the specified lead", lead });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({
+      message: "Error occure while updating lead",
+      errorMessage: e.message,
+    });
+  }
+});
+
+app.delete("/leads/:id", auth, async (req, res) => {
+  const _id = req.params.id;
+  try {
+    await Leads.findByIdAndDelete({
+      _id,
+    });
+    res.json({ message: "Successfully Deleted" });
+  } catch (e) {
+    res.status(500).send({
+      message: "Error occur while deleting the lead",
+      errorMessage: e.message,
+    });
+  }
+});
+
+app.delete("/leads", auth, async (req, res) => {
+  try {
+    await Leads.deleteMany({ userId: req.user._id });
+
+    res.json({ message: "Successfully Deleted all the leads" });
+  } catch (e) {
+    res.status(500).send({
+      message: "Error occur while deleting all leads",
+      errorMessage: e.message,
+    });
   }
 });
 

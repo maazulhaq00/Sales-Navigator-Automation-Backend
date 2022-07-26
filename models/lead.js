@@ -3,6 +3,20 @@ const validator = require("validator");
 const { Schema, Types } = mongoose;
 
 const schema = new mongoose.Schema({
+  userId: {
+    type: Types.ObjectId,
+    required: true
+  },
+  requestStatus: {
+    type: String,
+    required: true,
+    trim: true,
+    validate(value) {
+      if (validator.isEmpty(value)) {
+        throw new Error("Request Status cannot be empty");
+      }
+    },
+  },
   profileUrl: {
     type: String,
     required: true,
