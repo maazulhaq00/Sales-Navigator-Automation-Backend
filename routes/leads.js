@@ -89,10 +89,10 @@ app.patch("/leads/:id", auth, async (req, res) => {
 });
 
 app.delete("/leads/:id", auth, async (req, res) => {
-  const _id = req.params.id;
   try {
-    await Leads.findByIdAndDelete({
-      _id,
+    await Leads.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user._id,
     });
     res.json({ message: "Successfully Deleted" });
   } catch (e) {

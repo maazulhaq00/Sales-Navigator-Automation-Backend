@@ -112,8 +112,9 @@ app.patch("/campaign/:id", auth, async (req, res) => {
 app.delete("/campaign/:id", auth, async (req, res) => {
   const _id = req.params.id;
   try {
-    await UserCampaign.findByIdAndDelete({
-      _id,
+    await UserCampaign.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user._id,
     });
 
     res.json({ message: "Successfully Deleted" });
