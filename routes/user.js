@@ -211,12 +211,11 @@ app.post("/users/logoutAll", auth, async (req, res) => {
   }
 });
 
-app.patch("/user/:id", async (req, res) => {
+app.patch("/user/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = [
     "firstName",
     "lastName",
-    "email",
     "password",
     "linkedInEmail",
     "linkedInPassword",
@@ -225,7 +224,7 @@ app.patch("/user/:id", async (req, res) => {
     allowedUpdates.includes(update)
   );
   if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates!" });
+    return res.status(400).send({ message: "Invalid updates!" });
   }
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -234,7 +233,7 @@ app.patch("/user/:id", async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).send();
+      return res.status(404).send({message: "User not found"});
     }
     res.send(user);
   } catch (e) {
