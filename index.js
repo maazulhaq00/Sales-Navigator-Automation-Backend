@@ -7,8 +7,10 @@ const Leads = require("./models/lead");
 const user = require("./routes/user");
 const campaigns = require("./routes/campaign");
 const lead = require("./routes/leads");
+const dotenv = require("dotenv")
+dotenv.config()
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 app.use(express.json());

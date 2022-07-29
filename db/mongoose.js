@@ -1,2 +1,5 @@
+const dotenv = require("dotenv")
+dotenv.config()
+
 const mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost:27017/SalesNavAuto');
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/SalesNavAuto');
