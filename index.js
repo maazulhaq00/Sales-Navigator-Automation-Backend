@@ -8,7 +8,7 @@ const user = require("./routes/user");
 const campaigns = require("./routes/campaign");
 const lead = require("./routes/leads");
 
-const PORT = 8080;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
