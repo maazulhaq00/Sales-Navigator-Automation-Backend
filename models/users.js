@@ -3,6 +3,7 @@ const validator = require("validator");
 const { Schema, Types } = mongoose;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const schema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -11,16 +12,6 @@ const schema = new mongoose.Schema({
     validate(value) {
       if (validator.isEmpty(value)) {
         throw new Error("First name cannot be empty");
-      }
-    },
-  },
-  middleName: {
-    type: String,
-    required: true,
-    trim: true,
-    validate(value) {
-      if (validator.isEmpty(value)) {
-        throw new Error("Middle name cannot be empty");
       }
     },
   },
@@ -34,23 +25,15 @@ const schema = new mongoose.Schema({
       }
     },
   },
-  title: {
+  email: {
     type: String,
     required: true,
     trim: true,
     validate(value) {
-      if (validator.isEmpty(value)) {
-        throw new Error("Title cannot be empty");
-      }
-    },
-  },
-  userName: {
-    type: String,
-    required: true,
-    trim: true,
-    validate(value) {
-      if (validator.isEmpty(value)) {
-        throw new Error("User cannot be empty");
+      if (!validator.isEmail(value)) {
+        throw new Error("Email is invalid");
+      } else if (validator.isEmpty(value)) {
+        throw new Error("Email cannot be empty");
       }
     },
   },
@@ -86,6 +69,10 @@ const schema = new mongoose.Schema({
       }
     },
   },
+  isVerified:{
+    type: Boolean,
+    required: true,
+  },
   tokens: [
     {
       token: {
@@ -110,24 +97,27 @@ schema.methods.toJSON = function () {
 
 schema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, "shehzaib");
+  const token = jwt.sign({ _id: user._id.toString() }, "salesnavsecret");
 
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
 };
 
-schema.statics.findByCredentials = async (name, password) => {
-  const user = await User.findOne({ name });
+schema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
 
   if (!user) {
-    throw new Error("Unable to login");
+    throw new Error("Unable to login, Please signup first!");
+  }
+  if (user.isVerified == false) {
+    throw new Error("Unable to login, Please verify your email account!");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Error("Unable to login");
+    throw new Error("Unable to login, Please enter correct password");
   }
 
   return user;
