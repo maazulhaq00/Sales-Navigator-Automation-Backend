@@ -11,15 +11,11 @@ const lead = require("./routes/leads");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const dotenv = require("dotenv");
-dotenv.config();
-
 mongoose.connect(
   process.env.MONGO_URI || "mongodb://localhost:27017/SalesNavAuto",
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverApi: ServerApiVersion.v1,
+    useUnifiedTopology: true
   }
 );
 
