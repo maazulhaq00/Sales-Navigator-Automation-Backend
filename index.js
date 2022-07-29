@@ -1,5 +1,6 @@
 const express = require("express");
-const mongoose = require("./db/mongoose");
+// const mongoose = require("./db/mongoose");
+const mongoose = require("mongoose");
 
 const UserCampaign = require("./models/userCampaign");
 const Leads = require("./models/lead");
@@ -7,8 +8,20 @@ const Leads = require("./models/lead");
 const user = require("./routes/user");
 const campaigns = require("./routes/campaign");
 const lead = require("./routes/leads");
-const dotenv = require("dotenv")
-dotenv.config()
+const dotenv = require("dotenv");
+dotenv.config();
+
+const dotenv = require("dotenv");
+dotenv.config();
+
+mongoose.connect(
+  process.env.MONGO_URI || "mongodb://localhost:27017/SalesNavAuto",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverApi: ServerApiVersion.v1,
+  }
+);
 
 const PORT = process.env.PORT || 8080;
 
