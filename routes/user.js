@@ -33,8 +33,8 @@ app.post("/user/signup", async (req, res) => {
   }
   // checks if user already exits
   const user = await User.findOne({ email: req.body.email });
-  
-  console.log(user)
+
+  console.log(user);
 
   if (user) {
     res.status(400).json({ message: "Email already signed-up" });
@@ -115,9 +115,8 @@ app.post("/user/verify-account", auth, async (req, res) => {
 });
 
 app.post("/user/resend-verification-mail", async (req, res) => {
-  
   const user = await User.findOne({ email: req.body.email });
-  console.log(user)
+  console.log(user);
 
   if (!user) {
     res.status(400).json({ message: "Please sign-in first" });
@@ -140,7 +139,7 @@ app.post("/user/resend-verification-mail", async (req, res) => {
               <p>Welcome to Sales Navigator Automation!</p>
               <p>
                 To verify your account click
-                <a href="https://www.frontend.com/verify-account?token=${
+                <a href="http://localhost:3000/verify-account?token=${
                   user.tokens[user.tokens.length - 1].token
                 }">HERE</a>
               </p>
@@ -233,7 +232,7 @@ app.patch("/user/:id", auth, async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).send({message: "User not found"});
+      return res.status(404).send({ message: "User not found" });
     }
     res.send(user);
   } catch (e) {
