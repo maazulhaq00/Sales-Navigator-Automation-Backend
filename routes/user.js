@@ -68,7 +68,7 @@ app.post("/user/signup", async (req, res) => {
             <p>Welcome to Sales Navigator Automation!</p>
             <p>
               To verify your account click
-              <a href="https://www.frontend.com/verify-account?token=${
+              <a href="http://localhost:3000/verify-account?token=${
                 user.tokens[user.tokens.length - 1].token
               }">HERE</a>
   
