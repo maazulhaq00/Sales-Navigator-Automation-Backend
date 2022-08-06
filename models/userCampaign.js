@@ -139,26 +139,25 @@ const schema = new mongoose.Schema({
       }
     },
   },
-  workingDaysArr: [{
-    type: String,
-    required: true,
-    trim: true,
-    validate(value) {
-      if (validator.isEmpty(value)) {
-        throw new Error("working days cannot be empty");
-      }
-    },
-  }],
-  workHrsPerDay: {
-    type: Number,
-    required: true,
-    trim: true,
-    validate(value) {
-      if (value > 24) {
-        throw new Error("work hrs per day should be less than 24 hrs");
-      }
-    },
-  },
+  workingDaysArr: [
+    {
+      type: String,
+      required: true,
+      trim: true,
+      validate(value) {
+        if (validator.isEmpty(value)) {
+          throw new Error("working days cannot be empty");
+        }
+      },
+    }
+  ],
+  workHrsPerDay: [
+    {
+      type: String,
+      required: true,
+      trim: true
+    }
+  ],
 });
 
 const Campaign = mongoose.model("UserCampaign", schema);
